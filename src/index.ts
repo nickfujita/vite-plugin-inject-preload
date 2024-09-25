@@ -67,7 +67,11 @@ export default function VitePluginInjectPreload(options: Options): Plugin {
               continue
 
             const attrs: HtmlTagDescriptor['attrs'] = file.attributes || {}
-            const href = `${basePath}${asset}`
+            
+            const depth = ctx.path.split('/').length - 2
+            const relativePath = depth > 0 ? '../'.repeat(depth) : ''
+            const href = `${basePath}${relativePath}${asset}`;
+
             const type = attrs.type ? attrs.type : mimeLookup(asset)
             const as
               = typeof type === 'string' ? getAsWithMime(type) : undefined
